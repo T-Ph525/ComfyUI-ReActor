@@ -7,28 +7,43 @@ import os
 logger = logging.getLogger("AgeFilter")
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
-# Reduce noisy transformer logs
+# Silence transformer logs
 logging.getLogger("transformers").setLevel(logging.ERROR)
 
-# Path to the local age classification model
-MODEL_PATH = "/root/comfy/ComfyUI/models/age_classifier"
-
-# Minimum confidence to block underage content
+# Constants
 AGE_SCORE_THRESHOLD = 0.85
+MODEL_PATH = "/root/comfy/ComfyUI/models/age_classifier"
 
 
 def ensure_model_exists(model_path: str):
-    """Check that the required model files are present."""
+    """
+    Checks if the required age classification model files exist in the local path.
+    """
     required_files = ["config.json", "model.safetensors", "preprocessor_config.json"]
     for file in required_files:
         if not os.path.exists(os.path.join(model_path, file)):
             raise FileNotFoundError(f"Missing required model file: {file} in {model_path}")
 
 
-def nsfw_image(img_path: str, model_path: str) -> bool:
+def ensure_nsfw_model(model_path: str):
     """
-    Detect underage subjects in an image using a local classification model.
-    Raises PermissionError if confident the subject is a child/teen.
+    Deprecated: Retained for backward compatibility. No action taken.
+    """
+    logger.info("⚠️ ensure_nsfw_model() is deprecated and no longer needed.")
+    return None
+
+
+def nsfw_image(img_path: str, model_path: str = MODEL_PATH) -> bool:
+    """
+    Uses a local age classification model to block images with children/teens.
+    Raises PermissionError if subject is underage.
+    
+    Parameters:
+        img_path (str): Path to the image to check.
+        model_path (str): Local path to the age classification model.
+        
+    Returns:
+        bool: False if image passes, otherwise raises PermissionError.
     """
     ensure_model_exists(model_path)
     classifier = pipeline("image-classification", model=model_path)
@@ -49,8 +64,8 @@ def nsfw_image(img_path: str, model_path: str) -> bool:
 
 # Example usage
 if __name__ == "__main__":
-    test_image_path = "/path/to/your/image.jpg"  # Replace with actual image path
+    test_image_path = "/path/to/your/image.jpg"  # Replace with real image path
     try:
-        nsfw_image(test_image_path, MODEL_PATH)
+        nsfw_image(test_image_path)
     except PermissionError as e:
         print(str(e))
