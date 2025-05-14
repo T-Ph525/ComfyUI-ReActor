@@ -65,7 +65,7 @@ import scripts.reactor_sfw as sfw
 models_dir = folder_paths.models_dir
 REACTOR_MODELS_PATH = os.path.join(models_dir, "reactor")
 FACE_MODELS_PATH = os.path.join(REACTOR_MODELS_PATH, "faces")
-NSFWDET_MODEL_PATH = os.path.join(models_dir, "nsfw_detector","vit-base-nsfw-detector")
+NSFWDET_MODEL_PATH = os.path.join(models_dir, "age-classifier")
 
 if not os.path.exists(REACTOR_MODELS_PATH):
     os.makedirs(REACTOR_MODELS_PATH)
