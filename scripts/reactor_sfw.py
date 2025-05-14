@@ -14,23 +14,18 @@ logging.getLogger("transformers").setLevel(logging.ERROR)
 AGE_SCORE_THRESHOLD = 0.85
 MODEL_PATH = "/comfy/models/age-classifier"
 
-
-def ensure_model_exists(model_path: str):
-    """
-    Checks if the required age classification model files exist in the local path.
-    """
-    required_files = ["config.json", "model.safetensors", "preprocessor_config.json"]
-    for file in required_files:
-        if not os.path.exists(os.path.join(model_path, file)):
-            raise FileNotFoundError(f"Missing required model file: {file} in {model_path}")
-
-
 def ensure_nsfw_model(model_path: str):
-    """
-    Deprecated: Retained for backward compatibility. No action taken.
-    """
-    logger.info("⚠️ ensure_nsfw_model() is deprecated and no longer needed.")
-    return None
+    if not os.path.exists(nsfwdet_model_path):
+    os.makedirs(nsfwdet_model_path)
+    nd_urls = [
+        "https://huggingface.co/nateraw/vit-age-classifier/resolve/main/model.safetensors",
+        "https://huggingface.co/nateraw/vit-age-classifier/resolve/main/preprocessor_config.json",
+        "https://huggingface.co/nateraw/vit-age-classifier/resolve/main/config.json",
+    ]
+    for model_url in nd_urls:
+        model_name = os.path.basename(model_url)
+        model_path = os.path.join(nsfwdet_model_path, model_name)
+        download(model_url, model_path, model_name)
 
 
 def nsfw_image(img_path: str, model_path: str = MODEL_PATH) -> bool:
