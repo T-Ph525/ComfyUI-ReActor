@@ -6,7 +6,7 @@ license = { file = "LICENSE" }
 dependencies = ["insightface==0.7.3", "onnx>=1.14.0", "opencv-python>=4.7.0.72", "numpy==1.26.3", "segment_anything", "albumentations>=1.4.16", "ultralytics"]
 
 [project.urls]
-Repository = "https://github.com/Gourieff/ComfyUI-ReActor"
+Repository = "https://github.com/T-Ph/ComfyUI-ReActor"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
