@@ -12,7 +12,7 @@ logging.getLogger("transformers").setLevel(logging.ERROR)
 
 # Constants
 AGE_SCORE_THRESHOLD = 0.85
-MODEL_PATH = "/comfy/models/age_classifier"
+MODEL_PATH = "/comfy/models/age-classifier"
 
 
 def ensure_model_exists(model_path: str):
